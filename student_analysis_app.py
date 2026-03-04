@@ -271,6 +271,10 @@ def calculate_subject_stats(df):
     # 检查是否有选考科目列
     has_exam_subject = '选考科目' in df.columns
     
+    # 确保选考科目列为字符串类型
+    if has_exam_subject:
+        df['选考科目'] = df['选考科目'].astype(str)
+    
     stats = []
     
     # 语文数学英语
@@ -439,6 +443,10 @@ def calculate_class_subject_avg(df):
         return None
     
     df = df.copy()
+    
+    # 确保选考科目列为字符串类型
+    if '选考科目' in df.columns:
+        df['选考科目'] = df['选考科目'].astype(str)
     
     # 确定存在的科目列
     subject_cols = {}
@@ -654,6 +662,10 @@ def calculate_grade_rates(df, thresholds):
         thresholds: 字典，包含总分和单科的分数线设置
     """
     df = df.copy()
+    
+    # 确保选考科目列为字符串类型
+    if '选考科目' in df.columns:
+        df['选考科目'] = df['选考科目'].astype(str)
     
     # 检查是否有选考科目列，用于区分四选二科目
     has_exam_subject = '选考科目' in df.columns
