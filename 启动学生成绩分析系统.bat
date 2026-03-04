@@ -17,7 +17,7 @@ if errorlevel 1 (
 python -c "import streamlit" >nul 2>&1
 if errorlevel 1 (
     echo Installing dependencies...
-    pip install streamlit pandas numpy plotly openpyxl
+    pip install streamlit pandas numpy plotly openpyxl xlrd
 )
 
 echo Starting application...
