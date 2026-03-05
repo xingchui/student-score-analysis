@@ -1319,14 +1319,14 @@ def main():
         }
         
         st.markdown("---")
-        st.markdown("**单科分数线**")
+        st.markdown("**单科分数线** (满分150，允许小数)")
         col1, col2, col3 = st.columns(3)
         with col1:
-            excellent_threshold = st.slider("985线", 60, MAX_SCORES['语文'], 120, 5, key="excellent_global")
+            excellent_threshold = st.slider("985线", 90.0, 150.0, 120.0, 0.5, key="excellent_global")
         with col2:
-            good_threshold = st.slider("211线", 60, MAX_SCORES['语文'], 100, 5, key="good_global")
+            good_threshold = st.slider("211线", 75.0, 150.0, 105.0, 0.5, key="good_global")
         with col3:
-            pass_threshold = st.slider("一本线", 30, MAX_SCORES['语文'], 90, 5, key="pass_global")
+            pass_threshold = st.slider("一本线", 60.0, 150.0, 90.0, 0.5, key="pass_global")
         
         thresholds['单科'] = {'985': excellent_threshold, '211': good_threshold, '一本': pass_threshold}
         
