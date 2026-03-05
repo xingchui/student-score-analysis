@@ -1301,126 +1301,34 @@ def main():
         # 分学科分数线设置
         st.subheader("📏 分数线设置")
         
-        use_global_thresholds = st.toggle("统一分数线", value=True, help="关闭后可分科目设置")
-        
         # 科目满分设置（使用常量）
         
-        if use_global_thresholds:
-            # 总分分数线设置
-            st.markdown("**总分分数线**")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                score_985 = st.slider("985线", 300, MAX_SCORES['总分'], 600, 10, key="score_985")
-            with col2:
-                score_211 = st.slider("211线", 300, MAX_SCORES['总分'], 550, 10, key="score_211")
-            with col3:
-                score_yiben = st.slider("一本线", 300, MAX_SCORES['总分'], 500, 10, key="score_yiben")
-            
-            thresholds = {
-                '总分': {'985': score_985, '211': score_211, '一本': score_yiben},
-                'default': {'985': 90, '211': 80, '一本': 60}
-            }
-            
-            st.markdown("---")
-            st.markdown("**单科分数线**")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                excellent_threshold = st.slider("985线", 60, MAX_SCORES['语文'], 120, 5, key="excellent_global")
-            with col2:
-                good_threshold = st.slider("211线", 60, MAX_SCORES['语文'], 100, 5, key="good_global")
-            with col3:
-                pass_threshold = st.slider("一本线", 30, MAX_SCORES['语文'], 90, 5, key="pass_global")
-            
-            thresholds['单科'] = {'985': excellent_threshold, '211': good_threshold, '一本': pass_threshold}
-        else:
-            st.markdown("**总分分数线**")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                score_985 = st.slider("985线", 300, MAX_SCORES['总分'], 600, 10, key="total_985")
-            with col2:
-                score_211 = st.slider("211线", 300, MAX_SCORES['总分'], 550, 10, key="total_211")
-            with col3:
-                score_yiben = st.slider("一本线", 300, MAX_SCORES['总分'], 500, 10, key="total_yiben")
-            
-            thresholds = {
-                '总分': {'985': score_985, '211': score_211, '一本': score_yiben},
-                'default': {'985': 120, '211': 100, '一本': 90}
-            }
-            
-            st.markdown("---")
-            st.markdown("**分学科设置：**")
-            
-            # 语数外满分MAX_SCORES['语文']
-            st.markdown("📚 语数外 (满分MAX_SCORES['语文'])")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                thresholds['语文'] = {'985': st.slider("语文985线", 60, MAX_SCORES['语文'], 120, 5, key="yuwen_985")}
-            with col2:
-                thresholds['语文']['211'] = st.slider("语文211线", 60, MAX_SCORES['语文'], 100, 5, key="yuwen_211")
-            with col3:
-                thresholds['语文']['一本'] = st.slider("语文一本线", 30, MAX_SCORES['语文'], 90, 5, key="yuwen_yiben")
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                thresholds['数学'] = {'985': st.slider("数学985线", 60, MAX_SCORES['语文'], 120, 5, key="shuxue_985")}
-            with col2:
-                thresholds['数学']['211'] = st.slider("数学211线", 60, MAX_SCORES['语文'], 100, 5, key="shuxue_211")
-            with col3:
-                thresholds['数学']['一本'] = st.slider("数学一本线", 30, MAX_SCORES['语文'], 90, 5, key="shuxue_yiben")
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                thresholds['英语'] = {'985': st.slider("英语985线", 60, MAX_SCORES['语文'], 120, 5, key="yingyu_985")}
-            with col2:
-                thresholds['英语']['211'] = st.slider("英语211线", 60, MAX_SCORES['语文'], 100, 5, key="yingyu_211")
-            with col3:
-                thresholds['英语']['一本'] = st.slider("英语一本线", 30, MAX_SCORES['语文'], 90, 5, key="yingyu_yiben")
-            
-            # 首选科目满分100 (物理/历史二选一)
-            st.markdown("📋 首选科目 (满分100, 物理/历史二选一)")
-            
-            # 首选科目选择按钮
-            first_choice = st.radio(
-                "选择首选科目",
-                ["物理", "历史"],
-                horizontal=True,
-                help="选择本次考试学生的首选科目类型"
-            )
-            
-            if first_choice == "物理":
-                first_col = "物理"
-                st.success("📌 当前首选：物理")
-            else:
-                first_col = "历史"
-                st.success("📌 当前首选：历史")
-            
-            # 首选科目分数线设置
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                thresholds[first_col] = {'985': st.slider(f"{first_choice} 985线", 60, 100, 90, 5, key=f"{first_col}_985")}
-            with col2:
-                thresholds[first_col]['211'] = st.slider(f"{first_choice} 211线", 60, 100, 80, 5, key=f"{first_col}_211")
-            with col3:
-                thresholds[first_col]['一本'] = st.slider(f"{first_choice} 一本线", 30, 100, 60, 5, key=f"{first_col}_yiben")
-            
-            # 同步到物理(历史)列名（用于数据匹配）
-            thresholds['物理(历史)'] = thresholds[first_col].copy()
-            
-            # 四选二科目满分100 (化学/生物/政治/地理)
-            st.markdown("📋 四选二科目 (满分100, 分别设置)")
-            
-            # 分别设置化学、生物、政治、地理的分数线
-            four_choice_subjects = ['化学', '生物', '政治', '地理']
-            
-            for subj in four_choice_subjects:
-                with st.expander(f"📌 {subj} 分数线设置"):
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        thresholds[subj] = {'985': st.slider(f"{subj} 985线", 60, 100, 90, 5, key=f"{subj}_985")}
-                    with col2:
-                        thresholds[subj]['211'] = st.slider(f"{subj} 211线", 60, 100, 80, 5, key=f"{subj}_211")
-                    with col3:
-                        thresholds[subj]['一本'] = st.slider(f"{subj} 一本线", 30, 100, 60, 5, key=f"{subj}_yiben")
+        # 总分分数线设置
+        st.markdown("**总分分数线**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            score_985 = st.slider("985线", 300, MAX_SCORES['总分'], 600, 10, key="score_985")
+        with col2:
+            score_211 = st.slider("211线", 300, MAX_SCORES['总分'], 550, 10, key="score_211")
+        with col3:
+            score_yiben = st.slider("一本线", 300, MAX_SCORES['总分'], 500, 10, key="score_yiben")
+        
+        thresholds = {
+            '总分': {'985': score_985, '211': score_211, '一本': score_yiben},
+            'default': {'985': 90, '211': 80, '一本': 60}
+        }
+        
+        st.markdown("---")
+        st.markdown("**单科分数线**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            excellent_threshold = st.slider("985线", 60, MAX_SCORES['语文'], 120, 5, key="excellent_global")
+        with col2:
+            good_threshold = st.slider("211线", 60, MAX_SCORES['语文'], 100, 5, key="good_global")
+        with col3:
+            pass_threshold = st.slider("一本线", 30, MAX_SCORES['语文'], 90, 5, key="pass_global")
+        
+        thresholds['单科'] = {'985': excellent_threshold, '211': good_threshold, '一本': pass_threshold}
         
         st.divider()
         
