@@ -1307,11 +1307,11 @@ def main():
         st.markdown("**总分分数线**")
         col1, col2, col3 = st.columns(3)
         with col1:
-            score_985 = st.slider("985线", 300, MAX_SCORES['总分'], 600, 10, key="score_985")
+            score_985 = st.number_input("985线", min_value=0, max_value=int(MAX_SCORES['总分']), value=600, step=1, key="score_985")
         with col2:
-            score_211 = st.slider("211线", 300, MAX_SCORES['总分'], 550, 10, key="score_211")
+            score_211 = st.number_input("211线", min_value=0, max_value=int(MAX_SCORES['总分']), value=550, step=1, key="score_211")
         with col3:
-            score_yiben = st.slider("一本线", 300, MAX_SCORES['总分'], 500, 10, key="score_yiben")
+            score_yiben = st.number_input("一本线", min_value=0, max_value=int(MAX_SCORES['总分']), value=500, step=1, key="score_yiben")
         
         thresholds = {
             '总分': {'985': score_985, '211': score_211, '一本': score_yiben},
@@ -1322,11 +1322,11 @@ def main():
         st.markdown("**单科分数线** (满分150，允许小数)")
         col1, col2, col3 = st.columns(3)
         with col1:
-            excellent_threshold = st.slider("985线", 90.0, 150.0, 120.0, 0.5, key="excellent_global")
+            excellent_threshold = st.number_input("985线", min_value=0.0, max_value=150.0, value=120.0, step=0.5, key="excellent_global")
         with col2:
-            good_threshold = st.slider("211线", 75.0, 150.0, 105.0, 0.5, key="good_global")
+            good_threshold = st.number_input("211线", min_value=0.0, max_value=150.0, value=105.0, step=0.5, key="good_global")
         with col3:
-            pass_threshold = st.slider("一本线", 60.0, 150.0, 90.0, 0.5, key="pass_global")
+            pass_threshold = st.number_input("一本线", min_value=0.0, max_value=150.0, value=90.0, step=0.5, key="pass_global")
         
         thresholds['单科'] = {'985': excellent_threshold, '211': good_threshold, '一本': pass_threshold}
         
