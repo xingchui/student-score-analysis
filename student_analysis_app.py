@@ -1303,20 +1303,33 @@ def main():
         
         # 科目满分设置（使用常量）
         
-        # 总分分数线设置
+        # 总分分数线设置（原始分和赋分两种类型）
         st.markdown("**总分分数线**")
+        
+        st.markdown("📊 总分原始分 (满分750)")
         col1, col2, col3 = st.columns(3)
         with col1:
-            score_985 = st.number_input("985线", min_value=0.0, max_value=float(MAX_SCORES['总分']), value=600.0, step=0.1, key="score_985")
+            score_985 = st.number_input("总分原始分985线", 0.0, 750.0, 600.0, 0.1, key="score_985")
         with col2:
-            score_211 = st.number_input("211线", min_value=0.0, max_value=float(MAX_SCORES['总分']), value=550.0, step=0.1, key="score_211")
+            score_211 = st.number_input("总分原始分211线", 0.0, 750.0, 550.0, 0.1, key="score_211")
         with col3:
-            score_yiben = st.number_input("一本线", min_value=0.0, max_value=float(MAX_SCORES['总分']), value=500.0, step=0.1, key="score_yiben")
+            score_yiben = st.number_input("总分原始分一本线", 0.0, 750.0, 500.0, 0.1, key="score_yiben")
         
         thresholds = {
             '总分': {'985': score_985, '211': score_211, '一本': score_yiben},
             'default': {'985': 90, '211': 80, '一本': 60}
         }
+        
+        st.markdown("📊 总分赋分")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            score_985_fu = st.number_input("总分赋分985线", 0.0, 750.0, 600.0, 0.1, key="score_985_fu")
+        with col2:
+            score_211_fu = st.number_input("总分赋分211线", 0.0, 750.0, 550.0, 0.1, key="score_211_fu")
+        with col3:
+            score_yiben_fu = st.number_input("总分赋分一本线", 0.0, 750.0, 500.0, 0.1, key="score_yiben_fu")
+        
+        thresholds['总分赋分'] = {'985': score_985_fu, '211': score_211_fu, '一本': score_yiben_fu}
         
         st.markdown("---")
         st.markdown("**单科分数线**")
@@ -1376,15 +1389,15 @@ def main():
         # 第三类：四选二科目（满分100，每科两种类型）
         st.markdown("🧪 四选二科目 (满分100)")
         
-        # 化学/化学赋分
-        st.markdown("**化学/化学赋分**")
+        # 化学原始分/化学赋分
+        st.markdown("**化学原始分**")
         col1, col2, col3 = st.columns(3)
         with col1:
-            thresholds['化学'] = {'985': st.number_input("化学985线", 0.0, 100.0, 80.0, 0.1, key="huaxue_985")}
+            thresholds['化学原始分'] = {'985': st.number_input("化学原始分985线", 0.0, 100.0, 80.0, 0.1, key="huaxue_985")}
         with col2:
-            thresholds['化学']['211'] = st.number_input("化学211线", 0.0, 100.0, 70.0, 0.1, key="huaxue_211")
+            thresholds['化学原始分']['211'] = st.number_input("化学原始分211线", 0.0, 100.0, 70.0, 0.1, key="huaxue_211")
         with col3:
-            thresholds['化学']['一本'] = st.number_input("化学一本线", 0.0, 100.0, 60.0, 0.1, key="huaxue_yiben")
+            thresholds['化学原始分']['一本'] = st.number_input("化学原始分一本线", 0.0, 100.0, 60.0, 0.1, key="huaxue_yiben")
         
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -1394,15 +1407,15 @@ def main():
         with col3:
             thresholds['化学赋分']['一本'] = st.number_input("化学赋分一本线", 0.0, 100.0, 60.0, 0.1, key="huaxue_fu_yiben")
         
-        # 生物/生物赋分
-        st.markdown("**生物/生物赋分**")
+        # 生物原始分/生物赋分
+        st.markdown("**生物原始分**")
         col1, col2, col3 = st.columns(3)
         with col1:
-            thresholds['生物'] = {'985': st.number_input("生物985线", 0.0, 100.0, 80.0, 0.1, key="shengwu_985")}
+            thresholds['生物原始分'] = {'985': st.number_input("生物原始分985线", 0.0, 100.0, 80.0, 0.1, key="shengwu_985")}
         with col2:
-            thresholds['生物']['211'] = st.number_input("生物211线", 0.0, 100.0, 70.0, 0.1, key="shengwu_211")
+            thresholds['生物原始分']['211'] = st.number_input("生物原始分211线", 0.0, 100.0, 70.0, 0.1, key="shengwu_211")
         with col3:
-            thresholds['生物']['一本'] = st.number_input("生物一本线", 0.0, 100.0, 60.0, 0.1, key="shengwu_yiben")
+            thresholds['生物原始分']['一本'] = st.number_input("生物原始分一本线", 0.0, 100.0, 60.0, 0.1, key="shengwu_yiben")
         
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -1412,15 +1425,15 @@ def main():
         with col3:
             thresholds['生物赋分']['一本'] = st.number_input("生物赋分一本线", 0.0, 100.0, 60.0, 0.1, key="shengwu_fu_yiben")
         
-        # 政治/政治赋分
-        st.markdown("**政治/政治赋分**")
+        # 政治原始分/政治赋分
+        st.markdown("**政治原始分**")
         col1, col2, col3 = st.columns(3)
         with col1:
-            thresholds['政治'] = {'985': st.number_input("政治985线", 0.0, 100.0, 80.0, 0.1, key="zhengzhi_985")}
+            thresholds['政治原始分'] = {'985': st.number_input("政治原始分985线", 0.0, 100.0, 80.0, 0.1, key="zhengzhi_985")}
         with col2:
-            thresholds['政治']['211'] = st.number_input("政治211线", 0.0, 100.0, 70.0, 0.1, key="zhengzhi_211")
+            thresholds['政治原始分']['211'] = st.number_input("政治原始分211线", 0.0, 100.0, 70.0, 0.1, key="zhengzhi_211")
         with col3:
-            thresholds['政治']['一本'] = st.number_input("政治一本线", 0.0, 100.0, 60.0, 0.1, key="zhengzhi_yiben")
+            thresholds['政治原始分']['一本'] = st.number_input("政治原始分一本线", 0.0, 100.0, 60.0, 0.1, key="zhengzhi_yiben")
         
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -1430,15 +1443,15 @@ def main():
         with col3:
             thresholds['政治赋分']['一本'] = st.number_input("政治赋分一本线", 0.0, 100.0, 60.0, 0.1, key="zhengzhi_fu_yiben")
         
-        # 地理/地理赋分
-        st.markdown("**地理/地理赋分**")
+        # 地理原始分/地理赋分
+        st.markdown("**地理原始分**")
         col1, col2, col3 = st.columns(3)
         with col1:
-            thresholds['地理'] = {'985': st.number_input("地理985线", 0.0, 100.0, 80.0, 0.1, key="dili_985")}
+            thresholds['地理原始分'] = {'985': st.number_input("地理原始分985线", 0.0, 100.0, 80.0, 0.1, key="dili_985")}
         with col2:
-            thresholds['地理']['211'] = st.number_input("地理211线", 0.0, 100.0, 70.0, 0.1, key="dili_211")
+            thresholds['地理原始分']['211'] = st.number_input("地理原始分211线", 0.0, 100.0, 70.0, 0.1, key="dili_211")
         with col3:
-            thresholds['地理']['一本'] = st.number_input("地理一本线", 0.0, 100.0, 60.0, 0.1, key="dili_yiben")
+            thresholds['地理原始分']['一本'] = st.number_input("地理原始分一本线", 0.0, 100.0, 60.0, 0.1, key="dili_yiben")
         
         col1, col2, col3 = st.columns(3)
         with col1:
