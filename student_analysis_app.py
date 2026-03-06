@@ -1319,16 +1319,134 @@ def main():
         }
         
         st.markdown("---")
-        st.markdown("**单科分数线** (满分150，允许小数)")
+        st.markdown("**单科分数线**")
+        
+        # 第一类：语数外（满分150）
+        st.markdown("📚 语数外 (满分150)")
         col1, col2, col3 = st.columns(3)
         with col1:
-            excellent_threshold = st.number_input("985线", min_value=0.0, max_value=150.0, value=120.0, step=0.1, key="excellent_global")
+            thresholds['语文'] = {'985': st.number_input("语文985线", 0.0, 150.0, 120.0, 0.1, key="yuwen_985")}
         with col2:
-            good_threshold = st.number_input("211线", min_value=0.0, max_value=150.0, value=105.0, step=0.1, key="good_global")
+            thresholds['语文']['211'] = st.number_input("语文211线", 0.0, 150.0, 105.0, 0.1, key="yuwen_211")
         with col3:
-            pass_threshold = st.number_input("一本线", min_value=0.0, max_value=150.0, value=90.0, step=0.1, key="pass_global")
+            thresholds['语文']['一本'] = st.number_input("语文一本线", 0.0, 150.0, 90.0, 0.1, key="yuwen_yiben")
         
-        thresholds['单科'] = {'985': excellent_threshold, '211': good_threshold, '一本': pass_threshold}
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['数学'] = {'985': st.number_input("数学985线", 0.0, 150.0, 120.0, 0.1, key="shuxue_985")}
+        with col2:
+            thresholds['数学']['211'] = st.number_input("数学211线", 0.0, 150.0, 105.0, 0.1, key="shuxue_211")
+        with col3:
+            thresholds['数学']['一本'] = st.number_input("数学一本线", 0.0, 150.0, 90.0, 0.1, key="shuxue_yiben")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['英语'] = {'985': st.number_input("英语985线", 0.0, 150.0, 120.0, 0.1, key="yingyu_985")}
+        with col2:
+            thresholds['英语']['211'] = st.number_input("英语211线", 0.0, 150.0, 105.0, 0.1, key="yingyu_211")
+        with col3:
+            thresholds['英语']['一本'] = st.number_input("英语一本线", 0.0, 150.0, 90.0, 0.1, key="yingyu_yiben")
+        
+        # 第二类：物理/历史（满分100，二选一）
+        st.markdown("📋 首选科目 (满分100，物理/历史二选一)")
+        first_choice = st.radio(
+            "选择首选科目类型",
+            ["物理", "历史"],
+            horizontal=True,
+            key="first_choice_radio"
+        )
+        
+        if first_choice == "物理":
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                thresholds['物理'] = {'985': st.number_input("物理985线", 0.0, 100.0, 80.0, 0.1, key="wuli_985")}
+            with col2:
+                thresholds['物理']['211'] = st.number_input("物理211线", 0.0, 100.0, 70.0, 0.1, key="wuli_211")
+            with col3:
+                thresholds['物理']['一本'] = st.number_input("物理一本线", 0.0, 100.0, 60.0, 0.1, key="wuli_yiben")
+        else:
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                thresholds['历史'] = {'985': st.number_input("历史985线", 0.0, 100.0, 80.0, 0.1, key="lishi_985")}
+            with col2:
+                thresholds['历史']['211'] = st.number_input("历史211线", 0.0, 100.0, 70.0, 0.1, key="lishi_211")
+            with col3:
+                thresholds['历史']['一本'] = st.number_input("历史一本线", 0.0, 100.0, 60.0, 0.1, key="lishi_yiben")
+        
+        # 第三类：四选二科目（满分100，每科两种类型）
+        st.markdown("🧪 四选二科目 (满分100)")
+        
+        # 化学/化学赋分
+        st.markdown("**化学/化学赋分**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['化学'] = {'985': st.number_input("化学985线", 0.0, 100.0, 80.0, 0.1, key="huaxue_985")}
+        with col2:
+            thresholds['化学']['211'] = st.number_input("化学211线", 0.0, 100.0, 70.0, 0.1, key="huaxue_211")
+        with col3:
+            thresholds['化学']['一本'] = st.number_input("化学一本线", 0.0, 100.0, 60.0, 0.1, key="huaxue_yiben")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['化学赋分'] = {'985': st.number_input("化学赋分985线", 0.0, 100.0, 80.0, 0.1, key="huaxue_fu_985")}
+        with col2:
+            thresholds['化学赋分']['211'] = st.number_input("化学赋分211线", 0.0, 100.0, 70.0, 0.1, key="huaxue_fu_211")
+        with col3:
+            thresholds['化学赋分']['一本'] = st.number_input("化学赋分一本线", 0.0, 100.0, 60.0, 0.1, key="huaxue_fu_yiben")
+        
+        # 生物/生物赋分
+        st.markdown("**生物/生物赋分**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['生物'] = {'985': st.number_input("生物985线", 0.0, 100.0, 80.0, 0.1, key="shengwu_985")}
+        with col2:
+            thresholds['生物']['211'] = st.number_input("生物211线", 0.0, 100.0, 70.0, 0.1, key="shengwu_211")
+        with col3:
+            thresholds['生物']['一本'] = st.number_input("生物一本线", 0.0, 100.0, 60.0, 0.1, key="shengwu_yiben")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['生物赋分'] = {'985': st.number_input("生物赋分985线", 0.0, 100.0, 80.0, 0.1, key="shengwu_fu_985")}
+        with col2:
+            thresholds['生物赋分']['211'] = st.number_input("生物赋分211线", 0.0, 100.0, 70.0, 0.1, key="shengwu_fu_211")
+        with col3:
+            thresholds['生物赋分']['一本'] = st.number_input("生物赋分一本线", 0.0, 100.0, 60.0, 0.1, key="shengwu_fu_yiben")
+        
+        # 政治/政治赋分
+        st.markdown("**政治/政治赋分**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['政治'] = {'985': st.number_input("政治985线", 0.0, 100.0, 80.0, 0.1, key="zhengzhi_985")}
+        with col2:
+            thresholds['政治']['211'] = st.number_input("政治211线", 0.0, 100.0, 70.0, 0.1, key="zhengzhi_211")
+        with col3:
+            thresholds['政治']['一本'] = st.number_input("政治一本线", 0.0, 100.0, 60.0, 0.1, key="zhengzhi_yiben")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['政治赋分'] = {'985': st.number_input("政治赋分985线", 0.0, 100.0, 80.0, 0.1, key="zhengzhi_fu_985")}
+        with col2:
+            thresholds['政治赋分']['211'] = st.number_input("政治赋分211线", 0.0, 100.0, 70.0, 0.1, key="zhengzhi_fu_211")
+        with col3:
+            thresholds['政治赋分']['一本'] = st.number_input("政治赋分一本线", 0.0, 100.0, 60.0, 0.1, key="zhengzhi_fu_yiben")
+        
+        # 地理/地理赋分
+        st.markdown("**地理/地理赋分**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['地理'] = {'985': st.number_input("地理985线", 0.0, 100.0, 80.0, 0.1, key="dili_985")}
+        with col2:
+            thresholds['地理']['211'] = st.number_input("地理211线", 0.0, 100.0, 70.0, 0.1, key="dili_211")
+        with col3:
+            thresholds['地理']['一本'] = st.number_input("地理一本线", 0.0, 100.0, 60.0, 0.1, key="dili_yiben")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            thresholds['地理赋分'] = {'985': st.number_input("地理赋分985线", 0.0, 100.0, 80.0, 0.1, key="dili_fu_985")}
+        with col2:
+            thresholds['地理赋分']['211'] = st.number_input("地理赋分211线", 0.0, 100.0, 70.0, 0.1, key="dili_fu_211")
+        with col3:
+            thresholds['地理赋分']['一本'] = st.number_input("地理赋分一本线", 0.0, 100.0, 60.0, 0.1, key="dili_fu_yiben")
         
         st.divider()
         
